@@ -1,0 +1,16 @@
+@import "tailwindcss/base";
+
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
+
+
+.a{
+  color: #181414;
+}
+
+.signupdiv{
+  background-image: url('https://media.istockphoto.com/id/1397011551/photo/stack-of-silver-coins-with-trading-chart-in-financial-concepts-and-financial-investment.jpg?s=1024x1024&w=is&k=20&c=x-6SEWUB5mJjFsZgMJg-0Davlr9gtEt0zuy4zOoEw8k=');
+  object-fit: cover;
+  height:310px;
+}

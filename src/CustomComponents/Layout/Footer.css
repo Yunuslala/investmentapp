@@ -1,0 +1,16 @@
+.link-footer{
+    text-decoration: none;
+    color:white
+}
+
+.link-footer:hover{
+    text-decoration: underline;
+    transition: all ease-in 0.5s;
+    color:#FCB305;
+}
+
+.link-icon-foot:hover{
+    border: 1px solid #FCB305;
+    transition: all ease-in 0.5s;
+    color:#FCB305;
+}
