@@ -24,7 +24,9 @@ import logo from "../../../public/images/logo.png"
 import { IoPersonAddOutline } from "react-icons/io5";
 import { UserRound } from 'lucide-react';
 import { ChevronDown } from 'lucide-react';
+import { useRouter } from "next/navigation"
 export default function Header(){
+  const router=useRouter()
     return (
         <div className='w-[100%] flex flex-col justify-start items-start'>
             <div className="w-[100%] shadow-xl py-1">
@@ -64,6 +66,7 @@ export default function Header(){
                                     borderRadius:"10px"
 
                                 }}
+                                onClick={()=>router.push('/Signup')}
                                 className="w-[100%] flex justify-evenly text-[#FFFFFF] rounded-lg items-center  bg-[#1D687F] hover:bg-[#FCB305] hover:text-[#1E1E1E] hover:border-none cursor-pointer"
                             >
                                 <UserRound className='w-[30px] ' />

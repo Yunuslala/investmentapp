@@ -3,8 +3,9 @@
 @import "tailwindcss/components";
 
 @import "tailwindcss/utilities";
-
-
+.sidebarhover:hover{
+color:#FCB305;
+}
 .a{
   color: #181414;
 }
@@ -13,4 +14,30 @@
   background-image: url('https://media.istockphoto.com/id/1397011551/photo/stack-of-silver-coins-with-trading-chart-in-financial-concepts-and-financial-investment.jpg?s=1024x1024&w=is&k=20&c=x-6SEWUB5mJjFsZgMJg-0Davlr9gtEt0zuy4zOoEw8k=');
   object-fit: cover;
   height:310px;
+}
+
+
+.inputtagsname{
+  padding: 0.5vmax -1vmax;
+  width: 189px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.inputtagsname::placeholder{
+  font-family: Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+  
+}
+.formdiv:hover{
+  border:1px solid #004BAE;
+}
+
+
+.header-hover:hover{
+  background-color: #37B6FF;
 }
