@@ -5,21 +5,17 @@ import { RiCloseLine } from "react-icons/ri";
 import { BiLogOutCircle } from "react-icons/bi";
 import { MdDashboardCustomize } from "react-icons/md";
 import { Store } from "react-notifications-component";
-import axios from "axios";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
-import logo from "../../../public/images/logo.png"
 import { AlignHorizontalDistributeCenter, BadgeHelp, CreditCard, GalleryThumbnails } from 'lucide-react';
 import { GrUpdate } from "react-icons/gr";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import { HiBellAlert } from "react-icons/hi2";
 import { IoMdOptions } from "react-icons/io";
 import { HiMiniTicket } from "react-icons/hi2";
-import { FaQuoteRight } from "react-icons/fa";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
-import { UserType, logUserType } from '../Layout/HOC';
+import { logUserType } from '../Layout/HOC';
 import { UserProfile } from '@/lib/Reducers/api';
 
 export interface SidebarProps {

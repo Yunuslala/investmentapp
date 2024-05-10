@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import React from 'react'
 import HOC from '../Layout/HOC'
 // const HOC =dynamic(()=>import("../Layout/HOC"))
-import EuroSymbolIcon from '@mui/icons-material/EuroSymbol';
+
 import { BsShieldPlus } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { HandCoins, ShieldMinus } from 'lucide-react';
@@ -66,56 +66,78 @@ export interface InvestPortfollioOptionType {
     createdAt: string;
 }
 
-// const data: InvestPortfollioOptionType[] = [
-//     {
-//         "_id": "662525f2fa6fbf842944cdaa",
-//         "InvestOptionId": {
-//             "_id": "66230b6dfdb853dd215ef9a4",
-//             "CompanyName": "dummy company",
-//             "Logo": "https://res.cloudinary.com/dzvbykaxd/image/upload/v1713572713/eyjuoga6ffxhuhkojei5.jpg",
-//             "VideoMessage": "https://res.cloudinary.com/dzvbykaxd/video/upload/v1713572715/ro2v2h9jphzhaq6nudig.mp4",
-//             "Documents": "https://res.cloudinary.com/dzvbykaxd/image/upload/v1713570449/pdfs/dummy.pdf",
-//             "CategoryId": "66224fd93017a517a171ce28",
-//             "AboutCompany": "this is about compnay",
-//             "HashTags": "# hashtags",
-//             "WebsiteLink": "www.google.com",
-//             "InvestmentSizeMin": "20",
-//             "InvestmentSizeMax": "10",
-//             "LockingPeriod": "10 months",
-//             "Payouts": "Half-Yearly",
-//             "ReturnRateMin": "20",
-//             "ReturnRateMax": "30",
-//             "isDeleted": false,
-//             "createdAt": "2024-04-20T00:25:17.664Z",
-//             "__v": 0
-//         },
-//         "UserId": {
-//             "_id": "662252cd3017a517a171ce50",
-//             "Country": "India",
-//             "State": "Uttar Pradesh",
-//             "Locality": "kareli",
-//             "Status": "Beginner",
-//             "City": "Allahabad",
-//             "zip": "12202",
-//             "Intrests": [],
-//             "FirstName": "Mohd",
-//             "MiddleName": "",
-//             "LastName": "saif",
-//             "email": "kingbnl19@gmail.com",
-//             "Contact": "9696510765",
-//             "IdCard": "https://res.cloudinary.com/dzvbykaxd/image/upload/v1713525453/E-Commerce/images/Users/ordmihwcbmpsb4jod56j.jpg",
-//             "role": "user",
-//             "createdAt": "2024-04-19T11:17:33.647Z",
-//             "__v": 0
-//         },
-//         "__v": 0
-//     },
-//     // Include other objects here...
-// ];
+export interface InvestIdType {
+    _id: string;
+    CompanyName: string;
+    Logo: string;
+    VideoMessage: string;
+    CategoryId: string;
+    AboutCompany: string;
+    HashTags: string;
+    BuisnessType: string;
+    WebsiteLink: string;
+    InvestmentSizeMin: string;
+    InvestmentSizeMax: string;
+    LockingPeriod: string;
+    Payouts: string;
+    ReturnRateMin: string;
+    ReturnRateMax: string;
+    OperationsOfCompany: string;
+    isDeleted: boolean;
+    createdAt: string;
+    __v: number;
+}
+
+export interface InvestCategoryType {
+    _id: string;
+    name: string;
+    createdAt: string;
+    __v: number;
+}
+
+export interface InvestOptionIdType {
+    InvestId: InvestIdType;
+    isActivated: boolean;
+    paidMoney: string;
+    CategoryId: InvestCategoryType;
+    createdAt: string;
+    _id: string;
+}
+
+export interface InvestUserType {
+    _id: string;
+    Country: string;
+    State: string;
+    Locality: string;
+    Status: string;
+    City: string;
+    zip: string;
+    Intrests: any[]; // Depending on the actual data type
+    FirstName: string;
+    MiddleName: string;
+    LastName: string;
+    email: string;
+    Contact: string;
+    IdCard: string;
+    role: string;
+    createdAt: string;
+    __v: number;
+}
+
+export interface InvestPortData {
+    _id: string;
+    InvestOptionId: InvestOptionIdType[];
+    UserId: InvestUserType;
+    __v: number;
+}
+
+export interface AllResponse {
+    data: InvestPortData[];
+}
 
 
 const portfollio = () => {
-    const [portfollioData, setportfollioData] = useState<InvestPortfollioOptionType[]>([]);
+    const [portfollioData, setportfollioData] = useState<InvestPortData>({});
     const [totalInvested, settotalInvested] = useState<number>(0);
     const [activeInvest, setactiveInvest] = useState<number>(0);
     const [deactiveInvest, setdeactiveInvest] = useState<number>(0);
@@ -127,11 +149,12 @@ const portfollio = () => {
                 const token = localStorage.getItem("UserToken");
                 if (token) {
                     const { data } = await UserPortfollio(token);
-                    setportfollioData(data);
+                    setportfollioData(data[0]);
                     let total=0;
                     let active=0;
                     let deactive=0;
-                    data && data?.map((item: InvestPortfollioOptionType) => {
+                    // data && data?.InvestOptionId
+                    data[0] && data[0]?.InvestOptionId.map((item: InvestOptionIdType ) => {
                         total+= Number(item?.paidMoney);
 
                         if (item?.isActivated == true) {

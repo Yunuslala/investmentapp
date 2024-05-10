@@ -1,8 +1,4 @@
 import axios from 'axios';
-import { UserLogin } from './AuthSlice/AuthSlice';
-import { FormDataPayload } from '@/CustomComponents/AuthPages/Signup';
-import { Stringifier } from 'postcss';
-import { stringify } from 'querystring';
 const url = "http://localhost:4500/api/v1"
 
 
@@ -287,8 +283,25 @@ export const UserPortfollio=async(token:string)=>{
     }
 }
 
+export const UserPortfollioById=async(token:string,id:string)=>{
+    try {
+        const Auth = {
+            headers: {
+                Authorization: `${token}`,
+            },
+        }
+        try {
+            const { data } = await axios.get(`${url}/Admin/UserPortfollio/${id}`, Auth);
+            return data;
+        } catch (error) {
+            return error;
+        }
+    } catch (error) {
+        
+    }
+}
 
-export const UserAllPortfollio=async(token:string)=>{
+export const GetUserAllPortfollio=async(token:string)=>{
     try {
         const Auth = {
             headers: {
@@ -318,6 +331,45 @@ export const GetUserPortfollioByCategory=async(token:string,id:string,payload:{
         }
         try {
             const { data } = await axios.post(`${url}/Admin/GetPortfollios-Category/${id}`,payload, Auth);
+            return data;
+        } catch (error) {
+            return error;
+        }
+    } catch (error) {
+        
+    }
+}
+export const GetAllAdminUserPortfollioByCategory=async(token:string,payload:{
+    CategoryId:string
+})=>{
+    try {
+        const Auth = {
+            headers: {
+                Authorization: `${token}`,
+            },
+        }
+        try {
+            const { data } = await axios.post(`${url}/Admin/UserGetPortfollios-Category`,payload, Auth);
+            return data;
+        } catch (error) {
+            return error;
+        }
+    } catch (error) {
+        
+    }
+}
+
+export const GetAllAdminUserPortfollioByCountry=async(token:string,payload:{
+    countryName:string
+})=>{
+    try {
+        const Auth = {
+            headers: {
+                Authorization: `${token}`,
+            },
+        }
+        try {
+            const { data } = await axios.post(`${url}/Admin/UserGetPortfollios-country`,payload, Auth);
             return data;
         } catch (error) {
             return error;
@@ -364,6 +416,7 @@ export const UpdateUserPayoutOptions=async(payload:{
             },
         }
         try {
+            console.log("updatedata",payload)
             const { data } = await axios.post(`${url}/User/Create-PayoutOptions`,payload, Auth);
             return data
         } catch (error) {
@@ -374,4 +427,22 @@ export const UpdateUserPayoutOptions=async(payload:{
     }
 }
 
+export const GetUserReturnPayouts=async(id:string,token:string)=>{
+    try {
+        const Auth = {
+            headers: {
+                Authorization: `${token}`,
+            },
+        }
+        try {
+          
+            const { data } = await axios.get(`${url}/User/getUsersPayout/${id}`, Auth);
+            return data
+        } catch (error) {
+            return error;
+        }
+    } catch (error) {
+        
+    }
+}
 

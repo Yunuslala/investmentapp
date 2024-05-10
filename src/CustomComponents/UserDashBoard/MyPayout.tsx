@@ -6,9 +6,32 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import HOC from '../Layout/HOC';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/lib/Reducers/store';
-import { GetuserPayoutDetails } from '@/lib/Reducers/api';
+import { GetUserReturnPayouts, GetuserPayoutDetails } from '@/lib/Reducers/api';
 
 
+interface Row {
+    id: number;
+    DateofPayoutIssued: string;
+    CategoryOfInvestemnt: string;
+    AmountTransfered: number;
+    TransactionType: string;
+    CurrentReturnRate: number;
+}
+interface Transaction {
+    _id: string;
+    UserId: string;
+    AmountTransfered: string;
+    TransactionType: string;
+    CurrentReturnRate: string;
+    CategoryId: {
+        _id: string;
+        name: string;
+        createdAt: string;
+        __v: number;
+    };
+    createdAt: string;
+    __v: number;
+}
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'Id', width: 70 },
     { field: 'CategoryOfInvestemnt', headerName: 'Category Of Investemnt', width: 230 },
@@ -32,23 +55,14 @@ const columns: GridColDef[] = [
     },
 ];
 
-const rows = [
-    { id: 1, DateofPayoutIssued: '25/03/2024', CategoryOfInvestemnt: 'Facility Management', AmountTransfered: 3500, TransactionType: "Payapl", CurrentReturnRate: 8 },
-    { id: 2, DateofPayoutIssued: '26/03/2024', CategoryOfInvestemnt: 'Coverage', AmountTransfered: 4200, TransactionType: "Payapl", CurrentReturnRate: 12 },
-    { id: 3, DateofPayoutIssued: '27/03/2024', CategoryOfInvestemnt: 'Education', AmountTransfered: 4500, TransactionType:  "Payapl", CurrentReturnRate: 14 },
-    { id: 4, DateofPayoutIssued: '28/03/2024', CategoryOfInvestemnt: 'Engineering', AmountTransfered: 1600, TransactionType: "Wise", CurrentReturnRate: 21 },
-    { id: 5, DateofPayoutIssued: '29/03/2024', CategoryOfInvestemnt: 'Technology', AmountTransfered: 2000, TransactionType: "Bnak Transfer", CurrentReturnRate: 8 },
-    { id: 6, DateofPayoutIssued: '30/03/2024', CategoryOfInvestemnt: 'Coverage', AmountTransfered: 14000, TransactionType: "Wise", CurrentReturnRate: 22 },
-    { id: 7, DateofPayoutIssued: '01/04/2024', CategoryOfInvestemnt: 'Engineering', AmountTransfered: 4040, TransactionType: "Bank Transfer", CurrentReturnRate: 14 },
-    { id: 8, DateofPayoutIssued: '02/04/2024', CategoryOfInvestemnt: 'Education', AmountTransfered: 36040, TransactionType: "Bank Transfer", CurrentReturnRate: 21 },
-    { id: 9, DateofPayoutIssued: '03/04/2024', CategoryOfInvestemnt: 'Engineering', AmountTransfered: 6500, TransactionType: "Wise", CurrentReturnRate: 25 },
-];
+
 
 
 
 const MyPayout = () => {
     const {UserLogin}=useSelector((store:RootState)=>store.AuthSlice);
-    const [Payoutdata,setPayoutData]=useState()
+    const [Payoutdata,setPayoutData]=useState();
+    const [rows,setrows]=useState<Row[]>([])
     useEffect(()=>{
         const paydetails=async()=>{
             const token=localStorage.getItem("UserToken");
@@ -56,13 +70,32 @@ const MyPayout = () => {
 
             if(token && id){
               
-                const {data}=await GetuserPayoutDetails(id,token);
-                
+                const {data}=await GetUserReturnPayouts(id,token);
+               const rowdata= convertToRows(data);
+               setrows(rowdata);
 
             }
         }
         paydetails()
     },[])
+    function convertToRows(transactions: Transaction[]): Row[] {
+        return transactions.map((transaction, index) => ({
+            id: index + 1,
+            DateofPayoutIssued: formatDate(transaction.createdAt),
+            CategoryOfInvestemnt: transaction.CategoryId.name,
+            AmountTransfered: parseInt(transaction.AmountTransfered),
+            TransactionType: transaction.TransactionType,
+            CurrentReturnRate: parseInt(transaction.CurrentReturnRate)
+        }));
+    }
+    
+    function formatDate(dateString: string): string {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear().toString();
+        return `${day}/${month}/${year}`;
+    }
     return (
         <div className='shadow-md w-[100%] pt-[50px]'>
             <div className='flex flex-col w-[100%] items-start justtify-start '>

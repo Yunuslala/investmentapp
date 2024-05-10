@@ -6,19 +6,14 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
+
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import Account from '../UserDashBoard/Account';
-import ProfileComponent from '../UserDashBoard/Account';
-import { MDBBtn, MDBInput } from 'mdb-react-ui-kit';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
 import { Tab } from '@headlessui/react';
 import {  OptionCategory, classNames } from '../UserDashBoard/UpdateMyPayoutOptions';
-import { City, Country, IState, State as StateData, ICity } from "country-state-city";
+import {  Country, State as StateData} from "country-state-city";
 import { ProfileUserData } from '../UserDashBoard/UserAccount';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/lib/Reducers/store';
@@ -36,7 +31,7 @@ export interface bankprop{
     otherPayoutLinks?:string,
     createdAt?:string
 }
-interface BankDetailProp{
+export interface BankDetailProp{
     bankprop?:bankprop
 }
 const UserPayOptions = () => {

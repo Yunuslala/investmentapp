@@ -234,23 +234,7 @@ const Signup = () => {
     let userdata = { FirstName, LastName, MiddleName, email, contact, password, ReferalId:referal, buisness, locality, zip, confirmPassword, status, gender:Gender, id, country, state, city,interests }
     console.log(userdata);
     setFormErrors(validate(userdata));
-    // Region,
-    // Country,
-    // State,
-    // City,
-    // zip,
-    // Intrests,
-    // Category,
-    // FirstName,
-    // MiddleName,
-    // LastName,
-    // email,
-    // password: hash,
-    // Contact,
-    // RefralId,
-    // role,
-    // IdCard,
-   
+    
     setIsSubmit(true)
   };
   const CreateUser=async()=>{

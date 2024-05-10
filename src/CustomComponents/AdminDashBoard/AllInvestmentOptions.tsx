@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { City, Country, IState, State as StateData, ICity } from "country-state-city";
+import {  Country, State as StateData } from "country-state-city";
 import HOC from '../Layout/HOC'
 import {
     Select,

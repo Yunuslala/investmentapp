@@ -3,29 +3,29 @@ import React, { useEffect, useState } from 'react'
 import {
     Drawer,
     DrawerClose,
-    DrawerContent,
-    DrawerTrigger,
+    DrawerContent
 } from "@/components/ui/drawer";
 import { MDBInput, MDBCheckbox, MDBBtn, MDBFile, MDBRadio, MDBIcon } from 'mdb-react-ui-kit';
 import { RxCrossCircled } from "react-icons/rx";
-import { Avatar, SwipeableDrawer } from '@mui/material';
-import { Eye, MoveRight, Pencil } from 'lucide-react';
+import { Avatar } from '@mui/material';
+import { Eye } from 'lucide-react';
 import { ScrollShadow } from "@nextui-org/react";
-import { Textarea } from '@/components/ui/textarea';
 import { InvestOptionData } from '../AdminDashBoard/AllInvestmentOptions';
-import { Asul } from 'next/font/google';
 import Dialog from '@mui/material/Dialog';
 import { subscribeInvestOption } from '@/lib/Reducers/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaCcPaypal } from "react-icons/fa";
+import { SiPayoneer } from "react-icons/si";
+import { FaYandex } from "react-icons/fa";
+import { FaCcStripe } from "react-icons/fa";
 interface PaymentDialogProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    InvestmentMin:string,
-    InvestmentMax:string,
+    InvestmentMin: string,
+    InvestmentMax: string,
     onClose: (value: string) => void;
-    InvestId:string
+    InvestId: string
 }
 export interface optionDrawerProp {
     isOpen: boolean;
@@ -49,56 +49,56 @@ export const PayoutOptionCard: React.FC<props> = ({ cardData }) => {
         console.log("open", open)
         setIsDrawerOpen(open); // Set the state directly with boolean value
     };
-   
+
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     function PaymentDialog(props: PaymentDialogProps) {
-        const { onClose, open,InvestmentMax,InvestmentMin,InvestId } = props;
+        const { onClose, open, InvestmentMax, InvestmentMin, InvestId } = props;
+        const [mymoney,setmymoney]=useState<string>("")
 
 
-
- const SubscribeOption = async (id: string) => {
-        try {
-            const token = localStorage.getItem("UserToken");
-            const payload = {
-                InvestOptionId: id,
-                paidMoney:InvestmentMin && InvestmentMin
-            }
-            if (token) {
-                const apidata = await subscribeInvestOption(token, payload);
-
-                if (apidata.success == true) {
-                    const ErrorToast = () => {
-                        toast.success(apidata.msg, {
-                            position: "top-center",
-                            autoClose: 3000, // Auto-close the toast after 5000 milliseconds (5 seconds)
-                            hideProgressBar: false, // Show the progress bar
-                            className: "custom-toast", // Custom class for styling
-                        });
-                    };
-                    ErrorToast();
-
+        const SubscribeOption = async (id: string) => {
+            try {
+                const token = localStorage.getItem("UserToken");
+                const payload = {
+                    InvestOptionId: id,
+                    paidMoney: mymoney?mymoney:"" 
                 }
-                else {
-                    console.log("apidata", apidata)
-                    const ErrorToast = () => {
-                        toast.error(apidata.response.data.msg, {
-                            position: "top-center",
-                            autoClose: 3000, // Auto-close the toast after 5000 milliseconds (5 seconds)
-                            hideProgressBar: false, // Show the progress bar
-                            className: "custom-toast", // Custom class for styling
-                        });
-                    };
-                    ErrorToast();
+                if (token) {
+                    const apidata = await subscribeInvestOption(token, payload);
+
+                    if (apidata.success == true) {
+                        const ErrorToast = () => {
+                            toast.success(apidata.msg, {
+                                position: "top-center",
+                                autoClose: 3000, // Auto-close the toast after 5000 milliseconds (5 seconds)
+                                hideProgressBar: false, // Show the progress bar
+                                className: "custom-toast", // Custom class for styling
+                            });
+                        };
+                        ErrorToast();
+
+                    }
+                    else {
+                        console.log("apidata", apidata)
+                        const ErrorToast = () => {
+                            toast.error(apidata.response.data.msg, {
+                                position: "top-center",
+                                autoClose: 3000, // Auto-close the toast after 5000 milliseconds (5 seconds)
+                                hideProgressBar: false, // Show the progress bar
+                                className: "custom-toast", // Custom class for styling
+                            });
+                        };
+                        ErrorToast();
+                    }
                 }
+                handleClose()
             }
-            handleClose()
+            catch (error) {
+                console.error("Error fetching user profile:", error);
+            }
         }
-        catch (error) {
-            console.error("Error fetching user profile:", error);
-        }
-    }
 
         const handleClose = () => {
             setOpen(false)
@@ -109,11 +109,14 @@ export const PayoutOptionCard: React.FC<props> = ({ cardData }) => {
         };
 
         return (
-            <Dialog onClose={handleClose} open={open} className='w-[600px] flex items-start p-[20px]  mx-auto'>
-                <div className="w-[100%] flex flex-col items-start justify-start py-[10px]">
+            <Dialog onClose={handleClose} open={open} className='w-[100%] flex items-start p-[20px]  mx-auto'>
+                <div className="w-[500px] flex flex-col items-start justify-start py-[10px]">
                     <div className='w-[100%] mx-auto flex flex-col items-start'>
                         <div className='flex w-[60%] mx-auto items-start'>
                             <p className='font-bold text-center text-lg leading-7 text-gray-900'>Investment Range</p>
+                        </div>
+                        <div className='flex w-[60%] mx-auto items-start mb-[4px]'>
+                            <MDBInput className='mb-2' id='form5Example1' label={'Fill Your Money'} onChange={(e:any)=>setmymoney(e.target.value)} />
                         </div>
                         <div className='flex w-[50%] mx-auto jusitfy-between items-center'>
                             <p className="font-bold text-center text-lg leading-7 text-gray-900">{InvestmentMin && InvestmentMin}</p>
@@ -136,14 +139,59 @@ export const PayoutOptionCard: React.FC<props> = ({ cardData }) => {
                                         size="40px"
                                         className="text-primary pe-2"
                                     />{" "}
-                                  
+
                                 </p>
                                 <div className="ms-auto">Pay With paypal</div>
                             </div>
                         </div>
+                        <div className="d-flex w-[100%]  p-[20px] pb-3 ">
+                            <div className="d-flex  align-items-center pe-2">
+                                <MDBRadio name="radioNoLabel" id="radioNoLabel1" checked />
+                            </div>
+                            <div className="rounded border d-flex w-100 p-3 align-items-center">
+                                <p className="mb-0">
+                                    <FaCcStripe
+                                        size="40px"
+                                        className="text-primary pe-2"
+                                    />{" "}
+
+                                </p>
+                                <div className="ms-auto">Pay With Stripe</div>
+                            </div>
+                        </div>
+                        <div className="d-flex w-[100%]  p-[20px] pb-3 ">
+                            <div className="d-flex  align-items-center pe-2">
+                                <MDBRadio name="radioNoLabel" id="radioNoLabel1" checked />
+                            </div>
+                            <div className="rounded border d-flex w-100 p-3 align-items-center">
+                                <p className="mb-0">
+                                    <FaYandex
+                                        size="40px"
+                                        className="text-primary pe-2"
+                                    />{" "}
+
+                                </p>
+                                <div className="ms-auto">Pay With Yandex</div>
+                            </div>
+                        </div>
+                        <div className="d-flex w-[100%]  p-[20px] pb-3 ">
+                            <div className="d-flex  align-items-center pe-2">
+                                <MDBRadio name="radioNoLabel" id="radioNoLabel1" checked />
+                            </div>
+                            <div className="rounded border d-flex w-100 p-3 align-items-center">
+                                <p className="mb-0">
+                                    <SiPayoneer
+                                        size="40px"
+                                        className="text-primary pe-2"
+                                    />{" "}
+
+                                </p>
+                                <div className="ms-auto">Pay With Payoneer</div>
+                            </div>
+                        </div>
 
 
-                        <MDBBtn block size="lg" onClick={(e:any)=>SubscribeOption(InvestId)}>
+                        <MDBBtn block size="lg" onClick={(e: any) => SubscribeOption(InvestId)}>
                             Proceed to payment
                         </MDBBtn>
                     </div>
@@ -201,8 +249,8 @@ export const PayoutOptionCard: React.FC<props> = ({ cardData }) => {
 
                     </div>
                     <PaymentDialog
-                    InvestmentMin={cardData?.InvestmentSizeMin}
-                    InvestmentMax={cardData?.InvestmentSizeMax}
+                        InvestmentMin={cardData?.InvestmentSizeMin}
+                        InvestmentMax={cardData?.InvestmentSizeMax}
                         open={open}
                         InvestId={cardData?._id}
                         onClose={handleClose}
